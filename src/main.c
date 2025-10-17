@@ -11,58 +11,82 @@
 /* ************************************************************************** */
 
 #include "../philo.h"
-#include <string.h>
 
-void	ft_clean(t_input *words, char *input)
-{
-	if (input)
-		free(input);
-	// clean stack func needed
-	if (words->word)
-		free(words->word);
-	if (words)
-		free(words);
-}
+// int	main(int argc, char **argv)
 
-// copy envp to stack and after that mutate the PATH when execv usiung it
-// int	main(int argc, char **argv, char **envp)
-int	main(int argc, char **argv, char **envp)
-{
-	t_input	*words;
-	char	*input;
-	t_env	*my_env;
-	char	*inputs[];
-	char	*cmd[];
 
-	inputs[] = {"ls", "-l", NULL};
-	cmd[] = {"echo", "hello", NULL};
-	my_env = init_env(envp);
-	// function to copy envp to stack
-	execve("/bin/echo", cmd, envp);
-	words = malloc(sizeof(*words));
-	if (words == NULL)
-		exit(3);
-	print_my_env(my_env); // function to print env list
-	while (42)
-	{
-		input = readline("Minishell % ");
-		if (input == NULL)
-			break ;
-		if (*input == '\0')
-		{
-			free(input);
-			continue ;
-		}
-		// olga(input, words);
-	}
-	return (0);
-}
-
-// int	main(int argc, char **argv, char **envp)
 // {
-//    (void)argc;
-//     (void)argv;
-//     (void)envp;
-//     ft_printf("Welcome to Minishell!\n");
-//     return (0);
+	
+// 	return (0);
 // }
+
+#include <pthread.h>
+pthread_mutex_t balance_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+// the initial balance is 0
+int balance = 0;
+
+// write the new balance (after as simulated 1/4 second delay)
+void write_balance(int new_balance)
+{
+  usleep(250000);
+  pthread_mutex_lock(&balance_mutex);
+  balance = new_balance;
+  pthread_mutex_unlock(&balance_mutex);
+}
+
+// returns the balance (after a simulated 1/4 seond delay)
+int read_balance()
+{
+  usleep(250000);
+  pthread_mutex_lock(&balance_mutex);
+  int b = balance;
+  pthread_mutex_unlock(&balance_mutex);
+  return b;
+}
+
+// carry out a deposit
+void* deposit(void *amount)
+{
+  pthread_mutex_lock(&balance_mutex);
+
+  int account_balance = balance;
+  account_balance += *((int *) amount);
+  balance = account_balance;
+
+  pthread_mutex_unlock(&balance_mutex);
+
+  return NULL;
+}
+
+int main()
+{
+  // output the balance before the deposits
+  int before = read_balance();
+  printf("Before: %d\n", before);
+
+  // we'll create two threads to conduct a deposit using the deposit function
+  pthread_t thread1;
+  pthread_t thread2;
+
+  // the deposit amounts... the correct total afterwards should be 500
+  int deposit1 = 300;
+  int deposit2 = 200;
+
+  // create threads to run the deposit function with these deposit amounts
+  pthread_create(&thread1, NULL, deposit, (void*) &deposit1);
+  pthread_create(&thread2, NULL, deposit, (void*) &deposit2);
+
+  // join the threads
+  pthread_join(thread1, NULL);
+  pthread_join(thread2, NULL);
+
+  // output the balance after the deposits
+  int after = read_balance();
+  printf("After: %d\n", after);
+
+  return 0;
+}
+
+
+

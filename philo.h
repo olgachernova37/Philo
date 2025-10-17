@@ -15,20 +15,10 @@
 
 # include "libs/libft/libft.h"
 # include "libs/libftprintf/ft_printf.h"
-# include <curses.h>
-# include <dirent.h>
-# include <errno.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
-# include <stdint.h>
-# include <stdlib.h>
-# include <sys/ioctl.h>
-# include <sys/stat.h>
-# include <sys/wait.h>
-# include <term.h>
-# include <termios.h>
+
+#include <pthread.h>
 # include <unistd.h>
+#include <stdio.h>
 
 typedef enum{
     TOKEN_WORD, //0

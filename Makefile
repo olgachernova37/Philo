@@ -12,8 +12,8 @@
 
 
 CC = cc # cc 
-# CFLAGS = -g -Wall -Wextra -Werror
-NAME = minishell
+CFLAGS = -g -Wall -Wextra -Werror
+NAME = philo
 SRCDIR = src
 OBJDIR = obj
 LIBFTDIR = libs/libft
@@ -32,7 +32,7 @@ $(NAME): $(OBJS) $(LIBFTDIR)/libft.a $(FTPRINTF_DIR)/libftprintf.a
 
 # Create necessary directories for object files
 $(OBJDIR):
-	mkdir -p $(OBJDIR)/main $(OBJDIR)/commands
+	mkdir -p $(OBJDIR)
 
 # Compile source files to object files
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)

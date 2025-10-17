@@ -12,22 +12,4 @@
 
 #include "../philo.h"
 
-void	free_env(t_env *env)
-{
-	t_env	*tmp;
 
-	while (env)
-	{
-		tmp = env->next;
-		free(env->key);
-		free(env->value);
-		free(env);
-		env = tmp;
-	}
-}
-
-void	exit_minishell(t_env *env)
-{
-	free_env(env);
-	exit(EXIT_SUCCESS);
-}
