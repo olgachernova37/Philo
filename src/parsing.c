@@ -12,3 +12,24 @@
 
 #include "../philo.h"
 
+int	checking_input(int argc,char **argv)
+{
+	int	i;
+
+	i = 0;
+	if (argc != 5 && argc != 6)
+	{
+		printf("wrong number of arguments\n");
+		return (-1);
+	}
+	if (atoa(argv[1]) > 200)
+	{
+		printf("\n");
+		return (-1);
+	}
+	while (argv[i])
+	{
+		if (argv[i++] <= 0)
+			return (-1);
+	}
+}

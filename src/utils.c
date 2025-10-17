@@ -12,3 +12,15 @@
 
 #include "../philo.h"
 
+uint64_t get_time(void)
+{
+	struct timeval tv;
+	uint64_t sec_ms;
+	uint64_t usec_ms;
+
+	if (gettimeofday(&tv, NULL) == -1)
+		return (0);
+	sec_ms = (uint64_t)tv.tv_sec * 1000ULL;
+	usec_ms = (uint64_t)tv.tv_usec / 1000ULL;
+	return (sec_ms + usec_ms);
+}

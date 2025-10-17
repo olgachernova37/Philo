@@ -15,17 +15,19 @@
 
 # include "libs/libft/libft.h"
 # include "libs/libftprintf/ft_printf.h"
-
-#include <pthread.h>
+# include <pthread.h>
+# include <stdint.h>
+# include <stdio.h>
+# include <sys/time.h>
 # include <unistd.h>
-#include <stdio.h>
 
-typedef enum{
-    TOKEN_WORD, //0
-    TOKEN_PIPE, //1
-    TOKEN_REDIR_IN, //2
-    TOKEN_REDIR_OUT, //3
-} token_type_t;
+typedef enum
+{
+	TOKEN_WORD,      //0
+	TOKEN_PIPE,      //1
+	TOKEN_REDIR_IN,  //2
+	TOKEN_REDIR_OUT, //3
+}					token_type_t;
 
 typedef struct s_input
 {
