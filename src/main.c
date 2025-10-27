@@ -3,21 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olgac <olgac@student.42.fr>                +#+  +:+       +#+        */
+/*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 16:30:53 by olcherno          #+#    #+#             */
-/*   Updated: 2025/10/17 21:10:46 by olgac            ###   ########.fr       */
+/*   Updated: 2025/10/27 16:58:12 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+int is_digits_separated_by_spaces(char** str)
+{
+	int i;
+	if (!str || str[0] == '\0')
+        return (0);
+    if (str[0] == ' ')
+        return (0);
+    i = ft_strlen(str);
+    if (i > 0 && str[i - 1] == ' ')
+        return (0);
+    i = 0;
+    while (str[i])
+    {
+        if (isdigit(str[i]))
+			i++;
+        else if (str[i] == ' ')
+        {
+            /* next must be a digit (no consecutive spaces, no trailing space) */
+            if (str[i + 1] == '\0' || !isdigit(str[i + 1]))
+                return (0);
+			i++;
+        }
+        else
+            return (0);
+    }
+    return (1);
+}
+
+int checking_input(int argc, char const **argv)
+{	
+	int i;
+
+	i=0;
+	if (argc != 5 && argc != 6)
+	{
+		printf("Wrong number of argumnets");
+		return (-1);
+	}
+	while(argv[i])
+	{
+		if(is_digits_separated_by_spaces(argv[i]))
+			printf("All good");
+	}
+	
+	
+}
 
 int	main(int argc, char const **argv)
 {
 	int	i;
 
 	i = checking_input(argc, argv);
-	if (i <= -1)
+	if (i == -1)
 		return (-1);
 	printf("%s\n", argv[1]);
 	return (0);
