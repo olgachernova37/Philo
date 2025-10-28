@@ -1,35 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes.c                                           :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 16:30:48 by dt                #+#    #+#             */
-/*   Updated: 2025/07/28 19:34:59 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/28 19:36:45 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	checking_input(int argc,char **argv)
+int is_digits_separated_by_spaces(const char *s)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	if (argc != 5 && argc != 6)
+    if (!s)
+        return (0);
+    i = 0;
+    while (s[i])
+    {
+        if (!(ft_isdigit((int)(unsigned char)s[i]) || s[i] == ' '))
+        {
+            printf("argument should be digits separated by spaces\n");
+            return (0);
+        }
+        i++;
+    }
+    return (1);
+}
+
+int checking_input(int argc, char const **argv)
+{	
+    int i;
+
+    if (argc != 5 && argc != 6)
+    {
+        printf("Wrong number of arguments\n");
+        return (-1);
+    }
+	if(ft_atoi(argv[1]) <= 0)
 	{
-		printf("wrong number of arguments\n");
+		printf("Number of philosophers must be positive\n");
 		return (-1);
 	}
-	if (atoa(argv[1]) > 200)
-	{
-		printf("\n");
-		return (-1);
-	}
-	while (argv[i])
-	{
-		if (argv[i++] <= 0)
-			return (-1);
-	}
+    i = 1;
+    while (argv[i])
+    {
+        if (!is_digits_separated_by_spaces(argv[i]))
+            return (0);
+        i++;
+    }
+    return (1);
 }
