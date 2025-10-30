@@ -6,11 +6,11 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:11:33 by dt                #+#    #+#             */
-/*   Updated: 2025/07/27 17:15:48 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 20:22:20 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 uint64_t get_time(void)
 {

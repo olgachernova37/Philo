@@ -6,11 +6,11 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 16:30:48 by dt                #+#    #+#             */
-/*   Updated: 2025/10/28 19:36:45 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 20:29:40 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 int is_digits_separated_by_spaces(const char *s)
 {
@@ -23,7 +23,7 @@ int is_digits_separated_by_spaces(const char *s)
     {
         if (!(ft_isdigit((int)(unsigned char)s[i]) || s[i] == ' '))
         {
-            printf("argument should be digits separated by spaces\n");
+            printf("Argument should be digits separated by spaces\n");
             return (0);
         }
         i++;
@@ -35,7 +35,7 @@ int checking_input(int argc, char const **argv)
 {	
     int i;
 
-    if (argc != 5 && argc != 6)
+    if ((argc != 5 && argc != 6) || argv == NULL || argc > 200)
     {
         printf("Wrong number of arguments\n");
         return (-1);
@@ -54,3 +54,10 @@ int checking_input(int argc, char const **argv)
     }
     return (1);
 }
+
+// uint64_t get_time(void)
+// {
+//     struct timeval tv;
+//     gettimeofday(&tv, NULL);
+//     return (tv.tv_sec * 1000 + tv.tv_usec / 1000); // milliseconds
+// }
