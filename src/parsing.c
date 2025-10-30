@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 16:30:48 by dt                #+#    #+#             */
-/*   Updated: 2025/10/30 20:29:40 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 21:33:41 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,16 @@ int checking_input(int argc, char const **argv)
         i++;
     }
     return (1);
+}
+
+int is_simulation_running(t_table *table)
+{
+    int running;
+    
+    pthread_mutex_lock(&table->simulation_mutex);
+    running = table->simulation_active;
+    pthread_mutex_unlock(&table->simulation_mutex);
+    return (running);
 }
 
 // uint64_t get_time(void)

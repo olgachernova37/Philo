@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:11:33 by olcherno          #+#    #+#             */
-/*   Updated: 2025/10/30 19:32:43 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:03:35 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ int initialize_arg2(t_table *table,int argc, char **argv)
         }
         i++;
     }
+    if (pthread_mutex_init(&table->simulation_mutex, NULL) != 0)
+    {
+        free(table);
+        return (0);
+    }
     return (1);
 }
 
@@ -78,6 +83,7 @@ int initialize_arg(t_table *table,int argc, char **argv)
     table->time_to_die = (uint64_t)ft_atoi(argv[2]);
     table->time_to_eat = (uint64_t)ft_atoi(argv[3]);
     table->time_to_sleep = (uint64_t)ft_atoi(argv[4]);
+    table->simulation_active = 1; // simulation starts as active
     if (argc == 6)
         table->meals_required = ft_atoi(argv[5]);
     else
@@ -98,7 +104,6 @@ int initialize_arg(t_table *table,int argc, char **argv)
     }
     return(1);
 }
-
 
 t_table	*create_table(int argc, char **argv)
 {

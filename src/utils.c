@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:11:33 by dt                #+#    #+#             */
-/*   Updated: 2025/10/30 20:22:20 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:03:46 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,12 @@ uint64_t get_time(void)
 	sec_ms = (uint64_t)tv.tv_sec * 1000ULL;
 	usec_ms = (uint64_t)tv.tv_usec / 1000ULL;
 	return (sec_ms + usec_ms);
+}
+
+void	writing_function(t_table *t_table, int id, char *status)
+{
+	pthread_mutex_lock(&t_table->writing);
+	if (is_simulation_running(t_table))
+		printf("%lld %d %s\n", get_time() - t_table->start_time, id, status);
+	pthread_mutex_unlock(&t_table->writing);
 }

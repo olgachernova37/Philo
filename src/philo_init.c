@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:50:50 by olcherno          #+#    #+#             */
-/*   Updated: 2025/10/30 20:00:50 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:03:11 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ int spawn_philosophers(t_table *table)
         if (pthread_create(&table->philos[index].thread, NULL, philosopher_routine(index), &table->philos[index]) != 0)
         {
             // Handle thread creation failure
-            cleanup_created_threads(table, index);  // Clean up threads 0 to index-1
-            return (0); // Return failure
+            //cleanup_created_threads(table, index);  // Clean up threads 0 to index-1
+            return (1); // Return failure
         }
         index++;
     }

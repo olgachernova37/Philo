@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 16:31:21 by olcherno          #+#    #+#             */
-/*   Updated: 2025/10/30 20:30:04 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:01:09 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef struct s_table
     pthread_mutex_t	writing;
     uint64_t		start_time;
     t_philosofer	*philos;        // array size num_phil
+    int             simulation_active;    // Чи працює симуляція
+    pthread_mutex_t simulation_mutex; 
      // int           simulation_running;  // flag to stop simulation
     // pthread_t     monitor_thread;      // monitor thread handle
     // pthread_mutex_t simulation_mutex;  // protect simulation_running flag
@@ -67,9 +69,11 @@ typedef struct s_table
 // parsing.c
 int		checking_input(int argc, char const **argv);
 int		is_digits_separated_by_spaces(const char *s);
+int is_simulation_running(t_table *table);
 
 //utils.c
 uint64_t get_time(void);
+void	writing_function(t_table *t_table, int id, char *status);
 
 // philo_init.c
 int		initialize_philos(t_table *table);
@@ -86,6 +90,8 @@ void cleanup_on_forks_init_fail(t_table *table, int forks_inited);
 
 // routine.c
 void    philo_thinking();
-void	*philosopher_routine(int index);
-
+void	*philosopher_routine(void *arg);
+void    even_n_philo(uint64_t time_in_ms);
+void    odd_n_philo(t_philosofer *philo);
+void    accurate_sleep(uint64_t duration_ms);
 #endif
