@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:11:33 by olcherno          #+#    #+#             */
-/*   Updated: 2025/10/30 22:03:35 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:22:36 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int initialize_arg(t_table *table,int argc, char **argv)
     table->time_to_sleep = (uint64_t)ft_atoi(argv[4]);
     table->simulation_active = 1; // simulation starts as active
     if (argc == 6)
-        table->meals_required = ft_atoi(argv[5]);
+        table->meals_to_eat = ft_atoi(argv[5]);
     else
-        table->meals_required = -1;
+        table->meals_to_eat = -1;
 
     table->start_time = 0;
     if (pthread_mutex_init(&table->writing, NULL) != 0)

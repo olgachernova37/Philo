@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:11:33 by dt                #+#    #+#             */
-/*   Updated: 2025/10/30 22:03:46 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:16:07 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,36 @@ void	writing_function(t_table *t_table, int id, char *status)
 	if (is_simulation_running(t_table))
 		printf("%lld %d %s\n", get_time() - t_table->start_time, id, status);
 	pthread_mutex_unlock(&t_table->writing);
+}
+
+void take_forks(t_philosofer *philo)
+{
+	int left;
+	int right;
+
+	left = philo->id - 1;
+	right = philo->id % philo->table->num_phil;
+	/* lock in consistent order to reduce deadlock risk */
+	if (left < right)
+	{
+		pthread_mutex_lock(&philo->table->forks[left]);
+		pthread_mutex_lock(&philo->table->forks[right]);
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->table->forks[right]);
+		pthread_mutex_lock(&philo->table->forks[left]);
+	}
+}
+
+void philo_eat(t_philosofer *philo)
+{
+	philo->now_is_eating = true;
+	philo->last_eat = get_time();
+	writing_function(philo->table, philo->id, "is eating");
+	accurate_sleep(philo->table->time_to_eat);
+	philo->eaten_meals += 1;
+	philo->now_is_eating = false;
+	pthread_mutex_unlock(&philo->table->forks[philo->id - 1]);
+	pthread_mutex_unlock(&philo->table->forks[philo->id % philo->table->num_phil]);
 }

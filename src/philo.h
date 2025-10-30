@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 16:31:21 by olcherno          #+#    #+#             */
-/*   Updated: 2025/10/30 22:01:09 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:21:41 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_table
     uint64_t		time_to_die;
     uint64_t		time_to_eat;
     uint64_t		time_to_sleep;
-    int				meals_required; // -1 if not provided
+    int				meals_to_eat; // -1 if not provided
     pthread_mutex_t	*forks;         // array size num_phil
     pthread_mutex_t	writing;
     uint64_t		start_time;
@@ -74,6 +74,8 @@ int is_simulation_running(t_table *table);
 //utils.c
 uint64_t get_time(void);
 void	writing_function(t_table *t_table, int id, char *status);
+void take_forks(t_philosofer *philo);
+void philo_eat(t_philosofer *philo);
 
 // philo_init.c
 int		initialize_philos(t_table *table);
@@ -88,7 +90,7 @@ int		initialize_arg2(t_table *table, int argc, char **argv);
 void     destroy_table(t_table *table);
 void cleanup_on_forks_init_fail(t_table *table, int forks_inited);
 
-// routine.c
+// routine.c 5
 void    philo_thinking();
 void	*philosopher_routine(void *arg);
 void    even_n_philo(uint64_t time_in_ms);

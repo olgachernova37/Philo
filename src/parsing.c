@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 16:30:48 by dt                #+#    #+#             */
-/*   Updated: 2025/10/30 21:33:41 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:21:02 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,16 @@ int is_simulation_running(t_table *table)
     running = table->simulation_active;
     pthread_mutex_unlock(&table->simulation_mutex);
     return (running);
+}
+
+int is_dinner_over(t_philosofer *philo)
+{
+    int over;
+    
+    pthread_mutex_lock(&philo->table->simulation_mutex);
+    over = !(philo->table->simulation_active);
+    pthread_mutex_unlock(&philo->table->simulation_mutex);
+    return (over);
 }
 
 // uint64_t get_time(void)

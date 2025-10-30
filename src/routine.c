@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 21:00:15 by olcherno          #+#    #+#             */
-/*   Updated: 2025/10/30 21:55:44 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:20:21 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void odd_n_philo(t_philosofer *philo)
 
 void philo_thinking()
 {
-    usleep(1000); // Simulate thinking time
+    usleep(100); // Simulate thinking time
 }
 
 
@@ -72,13 +72,25 @@ void	*philosopher_routine(void *arg)
 		return (writing_function(philo->table, philo->id, "has taken a fork"), NULL);
     
     
-    
     philo_thinking();
     if (philo->table->num_phil % 2 == 0)
         even_n_philo(philo->table->time_to_eat);
     if (philo->table->num_phil % 2 == 1 && philo->id == philo->table->num_phil)
         odd_n_philo(philo);
-
-    writing_function(philo->table, philo->id, "is thinking");
+    while (is_simulation_running(philo->table))
+    {
+        // 1. THINKING
+        writing_function(philo->table, philo->id, "is thinking");
+        philo_thinking();
+        take_forks(philo);
+        philo_eat(philo);
+        // 5. SLEEPING
+        writing_function(philo->table, philo->id, "is sleeping");
+        philo_sleep(philo);
+        
+        // 6. CHECK CONDITIONS
+        if (is_dinner_over(philo))
+            break;
+    }
     return (NULL);
 }
