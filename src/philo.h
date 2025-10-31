@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 16:31:21 by olcherno          #+#    #+#             */
-/*   Updated: 2025/10/30 22:21:41 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/31 17:13:48 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,8 @@ typedef struct s_table
     t_philosofer	*philos;        // array size num_phil
     int             simulation_active;    // Чи працює симуляція
     pthread_mutex_t simulation_mutex; 
-     // int           simulation_running;  // flag to stop simulation
-    // pthread_t     monitor_thread;      // monitor thread handle
-    // pthread_mutex_t simulation_mutex;  // protect simulation_running flag
+    pthread_t     inspector;      // monitor thread handle
+    
 }	t_table;
 
 // main.c
@@ -70,18 +69,23 @@ typedef struct s_table
 int		checking_input(int argc, char const **argv);
 int		is_digits_separated_by_spaces(const char *s);
 int is_simulation_running(t_table *table);
+int is_dinner_over(t_philosofer *philo);
 
-//utils.c
+//utils.c 5
 uint64_t get_time(void);
 void	writing_function(t_table *t_table, int id, char *status);
 void take_forks(t_philosofer *philo);
 void philo_eat(t_philosofer *philo);
+void put_down_forks(t_philosofer *philo);
 
-// philo_init.c
+
+// philo_init.c 5
 int		initialize_philos(t_table *table);
 void    cleanup_on_philos_init_fail(t_table *table, int philos_inited);
 void    initialize_elements_of_philos(t_table *table, int index);
 int		spawn_philosophers(t_table *table);
+void philo_sleep(t_philosofer *philo);
+
 
 // table.c 5
 t_table	*create_table(int argc, char **argv);
@@ -90,10 +94,17 @@ int		initialize_arg2(t_table *table, int argc, char **argv);
 void     destroy_table(t_table *table);
 void cleanup_on_forks_init_fail(t_table *table, int forks_inited);
 
-// routine.c 5
+// philo routine.c 5
 void    philo_thinking();
 void	*philosopher_routine(void *arg);
 void    even_n_philo(uint64_t time_in_ms);
 void    odd_n_philo(t_philosofer *philo);
-void    accurate_sleep(uint64_t duration_ms);
+void    wait_action_to_end(uint64_t duration_ms);
+
+// monitor.c 5
+void *monitor_routine(void *arg);
+int check_philosopher_death(t_philosofer *philo);
+int check_all_philosophers_full(t_table *table);
+void stop_simulation(t_table *table);
+
 #endif

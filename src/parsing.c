@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 16:30:48 by dt                #+#    #+#             */
-/*   Updated: 2025/10/30 22:21:02 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/31 16:46:35 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,17 @@ int is_simulation_running(t_table *table)
 
 int is_dinner_over(t_philosofer *philo)
 {
-    int over;
-    
-    pthread_mutex_lock(&philo->table->simulation_mutex);
-    over = !(philo->table->simulation_active);
-    pthread_mutex_unlock(&philo->table->simulation_mutex);
-    return (over);
-}
+    int eaten_meals;
 
-// uint64_t get_time(void)
-// {
-//     struct timeval tv;
-//     gettimeofday(&tv, NULL);
-//     return (tv.tv_sec * 1000 + tv.tv_usec / 1000); // milliseconds
-// }
+    // Якщо meals_to_eat не задано (0), обід ніколи не закінчується
+    if (philo->table->meals_to_eat <= 0)
+        return (0);
+    
+    // Безпечно читаємо кількість з'їдених страв
+    pthread_mutex_lock(&philo->data_mutex);
+    eaten_meals = philo->eaten_meals;
+    pthread_mutex_unlock(&philo->data_mutex);
+    
+    // Перевіряємо чи з'їв достатньо
+    return (eaten_meals >= philo->table->meals_to_eat);
+}

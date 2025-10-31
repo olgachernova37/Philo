@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 21:00:15 by olcherno          #+#    #+#             */
-/*   Updated: 2025/10/30 22:20:21 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/31 16:44:22 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void even_n_philo(uint64_t time_in_ms)
 		usleep(delay);
 }
 
-void accurate_sleep(uint64_t duration_ms)
+void wait_action_to_end(uint64_t duration_ms)
 {
     uint64_t start_time;
     uint64_t elapsed;
@@ -52,7 +52,7 @@ void odd_n_philo(t_philosofer *philo)
     // Додаткова затримка для останнього філософа
     delay_time += (philo->id * 10);
     
-    accurate_sleep(delay_time);
+    wait_action_to_end(delay_time);
 }
 
 
@@ -73,22 +73,32 @@ void	*philosopher_routine(void *arg)
     
     
     philo_thinking();
+
+    // ПАРНА кількість філософів
     if (philo->table->num_phil % 2 == 0)
-        even_n_philo(philo->table->time_to_eat);
-    if (philo->table->num_phil % 2 == 1 && philo->id == philo->table->num_phil)
-        odd_n_philo(philo);
+    {
+        if (philo->id % 2 == 0)  // Парні ID (2,4,6...) чекають
+            even_n_philo(philo->table->time_to_eat);
+        // Непарні ID (1,3,5...) стартують відразу
+    }
+    // НЕПАРНА кількість філософів  
+    else
+    {
+        if (philo->id == philo->table->num_phil)  // Останній філософ
+            odd_n_philo(philo);
+        else if (philo->id % 2 == 0)  // Парні ID крім останнього
+            even_n_philo(philo->table->time_to_eat);
+        // Непарні ID (1,3,5...) крім останнього стартують відразу
+    }
     while (is_simulation_running(philo->table))
     {
-        // 1. THINKING
         writing_function(philo->table, philo->id, "is thinking");
         philo_thinking();
         take_forks(philo);
         philo_eat(philo);
-        // 5. SLEEPING
+        put_down_forks(philo);
         writing_function(philo->table, philo->id, "is sleeping");
         philo_sleep(philo);
-        
-        // 6. CHECK CONDITIONS
         if (is_dinner_over(philo))
             break;
     }

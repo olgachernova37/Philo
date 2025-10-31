@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:50:50 by olcherno          #+#    #+#             */
-/*   Updated: 2025/10/30 22:03:11 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/10/31 16:37:47 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ int initialize_philos(t_table *table)
     return(1);
 }
 
+void philo_sleep(t_philosofer *philo)
+{
+    wait_action_to_end(philo->table->time_to_sleep);
+}
+
 int spawn_philosophers(t_table *table)
 {
     // Placeholder implementation
@@ -79,7 +84,7 @@ int spawn_philosophers(t_table *table)
     {
         // Here you would create the thread for each philosopher
         table->philos[index].last_eat = table->start_time;
-        if (pthread_create(&table->philos[index].thread, NULL, philosopher_routine(index), &table->philos[index]) != 0)
+        if (pthread_create(&table->philos[index].thread, NULL, philosopher_routine, &table->philos[index]) != 0)
         {
             // Handle thread creation failure
             //cleanup_created_threads(table, index);  // Clean up threads 0 to index-1
