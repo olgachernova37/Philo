@@ -6,17 +6,17 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:11:33 by dt                #+#    #+#             */
-/*   Updated: 2025/10/31 16:49:20 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/11/03 17:42:55 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-uint64_t get_time(void)
+uint64_t	get_time(void)
 {
-	struct timeval tv;
-	uint64_t sec_ms;
-	uint64_t usec_ms;
+	struct timeval	tv;
+	uint64_t		sec_ms;
+	uint64_t		usec_ms;
 
 	if (gettimeofday(&tv, NULL) == -1)
 		return (0);
@@ -33,16 +33,15 @@ void	writing_function(t_table *t_table, int id, char *status)
 	pthread_mutex_unlock(&t_table->writing);
 }
 
-void take_forks(t_philosofer *philo)
+void	take_forks(t_philosofer *philo)
 {
-	int left;
-	int right;
+	int	left;
+	int	right;
 
 	left = philo->id - 1;
 	right = philo->id % philo->table->num_phil;
 	if (!is_simulation_running(philo->table))
-    	return;
-	/* lock in consistent order to reduce deadlock risk */
+		return ;
 	if (left < right)
 	{
 		pthread_mutex_lock(&philo->table->forks[left]);
@@ -59,19 +58,18 @@ void take_forks(t_philosofer *philo)
 	}
 }
 
-void put_down_forks(t_philosofer *philo)
+void	put_down_forks(t_philosofer *philo)
 {
-    int left_fork;
-    int right_fork;
+	int	left_fork;
+	int	right_fork;
 
-    left_fork = philo->id - 1;
-    right_fork = philo->id % philo->table->num_phil;
-
-    pthread_mutex_unlock(&philo->table->forks[left_fork]);
-    pthread_mutex_unlock(&philo->table->forks[right_fork]);
+	left_fork = philo->id - 1;
+	right_fork = philo->id % philo->table->num_phil;
+	pthread_mutex_unlock(&philo->table->forks[left_fork]);
+	pthread_mutex_unlock(&philo->table->forks[right_fork]);
 }
 
-void philo_eat(t_philosofer *philo)
+void	philo_eat(t_philosofer *philo)
 {
 	pthread_mutex_lock(&philo->data_mutex);
 	philo->now_is_eating = true;
@@ -81,6 +79,6 @@ void philo_eat(t_philosofer *philo)
 	writing_function(philo->table, philo->id, "is eating");
 	wait_action_to_end(philo->table->time_to_eat);
 	pthread_mutex_lock(&philo->data_mutex);
-    philo->now_is_eating = false;
-    pthread_mutex_unlock(&philo->data_mutex);
+	philo->now_is_eating = false;
+	pthread_mutex_unlock(&philo->data_mutex);
 }

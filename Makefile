@@ -6,7 +6,7 @@
 #    By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/06 15:18:15 by olcherno          #+#    #+#              #
-#    Updated: 2025/10/30 21:05:29 by olcherno         ###   ########.fr        #
+#    Updated: 2025/11/03 17:29:37 by olcherno         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJDIR = obj
 LIBFTDIR = libs/libft
 FTPRINTF_DIR = libs/libftprintf
 
-SRC= main.c parsing.c philo_init.c table.c  utils.c routine.c 
+SRC= main.c parsing.c philo_init.c table.c  utils.c routine.c monitor_routine.c
 
 
 OBJS = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
