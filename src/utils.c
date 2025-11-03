@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 16:11:33 by dt                #+#    #+#             */
-/*   Updated: 2025/11/03 17:42:55 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/11/03 19:59:45 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,31 +31,6 @@ void	writing_function(t_table *t_table, int id, char *status)
 	if (is_simulation_running(t_table))
 		printf("%lu %d %s\n", get_time() - t_table->start_time, id, status);
 	pthread_mutex_unlock(&t_table->writing);
-}
-
-void	take_forks(t_philosofer *philo)
-{
-	int	left;
-	int	right;
-
-	left = philo->id - 1;
-	right = philo->id % philo->table->num_phil;
-	if (!is_simulation_running(philo->table))
-		return ;
-	if (left < right)
-	{
-		pthread_mutex_lock(&philo->table->forks[left]);
-		writing_function(philo->table, philo->id, "has taken a fork");
-		pthread_mutex_lock(&philo->table->forks[right]);
-		writing_function(philo->table, philo->id, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(&philo->table->forks[right]);
-		writing_function(philo->table, philo->id, "has taken a fork");
-		pthread_mutex_lock(&philo->table->forks[left]);
-		writing_function(philo->table, philo->id, "has taken a fork");
-	}
 }
 
 void	put_down_forks(t_philosofer *philo)

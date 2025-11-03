@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 21:00:15 by olcherno          #+#    #+#             */
-/*   Updated: 2025/11/03 17:44:48 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/11/03 20:03:14 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,40 +56,4 @@ void	odd_n_philo(t_philosofer *philo)
 void	philo_thinking(void)
 {
 	usleep(100);
-}
-
-void	*philosopher_routine(void *arg)
-{
-	t_philosofer	*philo;
-
-	philo = (t_philosofer *)arg;
-	if (philo->table->num_phil == 1)
-		return (writing_function(philo->table, philo->id, "has taken a fork"),
-			NULL);
-	philo_thinking();
-	if (philo->table->num_phil % 2 == 0)
-	{
-		if (philo->id % 2 == 0)
-			even_n_philo(philo->table->time_to_eat);
-	}
-	else
-	{
-		if (philo->id == philo->table->num_phil)
-			odd_n_philo(philo);
-		else if (philo->id % 2 == 0)
-			even_n_philo(philo->table->time_to_eat);
-	}
-	while (is_simulation_running(philo->table))
-	{
-		writing_function(philo->table, philo->id, "is thinking");
-		philo_thinking();
-		take_forks(philo);
-		philo_eat(philo);
-		put_down_forks(philo);
-		writing_function(philo->table, philo->id, "is sleeping");
-		philo_sleep(philo);
-		if (is_dinner_over(philo))
-			break ;
-	}
-	return (NULL);
 }

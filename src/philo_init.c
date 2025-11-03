@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 18:50:50 by olcherno          #+#    #+#             */
-/*   Updated: 2025/11/03 17:48:22 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/11/03 19:52:07 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,27 +75,20 @@ int	spawn_philosophers(t_table *table)
 	int			index;
 	pthread_t	monitor;
 
-	// Placeholder implementation
-	// Actual implementation would create threads for each philosopher
 	index = 0;
 	table->start_time = get_time();
-	// Set to current time in actual implementation
 	while (index < table->num_phil)
 	{
-		// Here you would create the thread for each philosopher
 		table->philos[index].last_eat = table->start_time;
 		if (pthread_create(&table->philos[index].thread, NULL,
 				philosopher_routine, &table->philos[index]) != 0)
 		{
-			// Handle thread creation failure
-			// cleanup_created_threads(table, index);
-			// Clean up threads 0 to index-1
-			return (1); // Return failure
+			return (1);
 		}
 		index++;
 	}
 	if (pthread_create(&monitor, NULL, monitor_routine, table) != 0)
 		return (1);
 	table->inspector = monitor;
-	return (0); // Return 0 on success
+	return (0);
 }

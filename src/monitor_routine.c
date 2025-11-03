@@ -6,7 +6,7 @@
 /*   By: olcherno <olcherno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 16:53:37 by olcherno          #+#    #+#             */
-/*   Updated: 2025/11/03 17:45:10 by olcherno         ###   ########.fr       */
+/*   Updated: 2025/11/03 20:08:09 by olcherno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	check_all_philosophers_full(t_table *table)
 {
 	int	i;
 	int	full_count;
+	int	eaten_meals;
 
 	if (table->meals_to_eat <= 0)
 		return (0);
@@ -30,12 +31,16 @@ int	check_all_philosophers_full(t_table *table)
 	i = 0;
 	while (i < table->num_phil)
 	{
-		if (is_dinner_over(&table->philos[i]))
+		pthread_mutex_lock(&table->philos[i].data_mutex);
+		eaten_meals = table->philos[i].eaten_meals;
+		pthread_mutex_unlock(&table->philos[i].data_mutex);
+		if (eaten_meals >= table->meals_to_eat)
 			full_count++;
 		i++;
 	}
 	return (full_count == table->num_phil);
 }
+
 int	check_philosopher_death(t_philosofer *philo)
 {
 	uint64_t	time_from_last_meal;
@@ -50,35 +55,4 @@ int	check_philosopher_death(t_philosofer *philo)
 	if (time_from_last_meal > philo->table->time_to_die)
 		return (1);
 	return (0);
-}
-
-void	*monitor_routine(void *arg)
-{
-	t_table			*table;
-	t_philosofer	*philo;
-	int				i;
-
-	table = (t_table *)arg;
-	while (is_simulation_running(table))
-	{
-		i = 0;
-		while (i < table->num_phil)
-		{
-			philo = &table->philos[i];
-			if (check_philosopher_death(philo))
-			{
-				writing_function(table, table->philos[i].id, "died");
-				stop_simulation(table);
-				return (NULL);
-			}
-			i++;
-		}
-		if (check_all_philosophers_full(table))
-		{
-			stop_simulation(table);
-			return (NULL);
-		}
-		usleep(1000);
-	}
-	return (NULL);
 }
