@@ -24,34 +24,29 @@ static int	handle_single_philosopher(t_philosofer *philo)
 
 static void	initialize_philosopher_timing(t_philosofer *philo)
 {
-	philo_thinking();
-	if (philo->table->num_phil % 2 == 0)
-	{
-		if (philo->id % 2 == 0)
-			even_n_philo(philo->table->time_to_eat);
-	}
-	else
-	{
-		if (philo->id == philo->table->num_phil)
-			odd_n_philo(philo);
-		else if (philo->id % 2 == 0)
-			even_n_philo(philo->table->time_to_eat);
-	}
+	if (philo->id % 2 == 0)
+		ft_usleep(philo->table->time_to_eat);
 }
 
 static void	philosopher_life_cycle(t_philosofer *philo)
 {
+	uint64_t	margin;
+
+	margin = philo->table->time_to_die - (philo->table->time_to_eat
+			+ philo->table->time_to_sleep);
 	while (is_simulation_running(philo->table))
 	{
 		writing_function(philo->table, philo->id, "is thinking");
-		philo_thinking();
-		take_forks(philo);
+		if (margin > philo->table->time_to_eat && philo->table->num_phil < 200)
+			philo_thinking();
+		if (!take_forks(philo))
+			break ;
 		philo_eat(philo);
 		put_down_forks(philo);
-		writing_function(philo->table, philo->id, "is sleeping");
-		philo_sleep(philo);
 		if (is_dinner_over(philo))
 			break ;
+		writing_function(philo->table, philo->id, "is sleeping");
+		philo_sleep(philo);
 	}
 }
 

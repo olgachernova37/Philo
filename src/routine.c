@@ -15,28 +15,12 @@
 // parni
 void	even_n_philo(uint64_t time_in_ms)
 {
-	long long	start;
-	uint64_t	delay;
-
-	delay = time_in_ms / 2;
-	start = get_time();
-	while (get_time() - start < delay)
-		usleep(1000);
+	ft_usleep(time_in_ms / 2);
 }
 
 void	wait_action_to_end(uint64_t duration_ms)
 {
-	uint64_t	start_time;
-	uint64_t	elapsed;
-
-	start_time = get_time();
-	while (1)
-	{
-		elapsed = get_time() - start_time;
-		if (elapsed >= duration_ms)
-			break ;
-		usleep((duration_ms - elapsed) * 100);
-	}
+	ft_usleep(duration_ms);
 }
 
 // neparni
@@ -55,5 +39,5 @@ void	odd_n_philo(t_philosofer *philo)
 
 void	philo_thinking(void)
 {
-	usleep(100);
+	usleep(500);
 }

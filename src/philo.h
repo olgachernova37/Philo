@@ -58,17 +58,18 @@ int					is_digits_separated_by_spaces(const char *s);
 int					is_simulation_running(t_table *table);
 int					is_dinner_over(t_philosofer *philo);
 
-// utils.c 5
+// utils.c 6
 uint64_t			get_time(void);
+void				ft_usleep(uint64_t time_in_ms);
 void				writing_function(t_table *t_table, int id, char *status);
-void				take_forks(t_philosofer *philo);
+int					take_forks(t_philosofer *philo);
 void				philo_eat(t_philosofer *philo);
 void				put_down_forks(t_philosofer *philo);
 
 // philo_init.c 5
 int					initialize_philos(t_table *table);
-void				cleanup_on_philos_init_fail(t_table *table,
-						int philos_inited);
+void	cleanup_on_philos_init_fail(t_table *table,
+									int philos_inited);
 void				initialize_elements_of_philos(t_table *table, int index);
 int					spawn_philosophers(t_table *table);
 void				philo_sleep(t_philosofer *philo);
@@ -78,8 +79,8 @@ t_table				*create_table(int argc, char **argv);
 int					initialize_arg(t_table *table, int argc, char **argv);
 int					initialize_arg2(t_table *table, int argc, char **argv);
 void				destroy_table(t_table *table);
-void				cleanup_on_forks_init_fail(t_table *table,
-						int forks_inited);
+void	cleanup_on_forks_init_fail(t_table *table,
+								int forks_inited);
 
 // philo routine.c 5
 void				philo_thinking(void);

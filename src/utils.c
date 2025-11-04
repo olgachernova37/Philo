@@ -25,6 +25,15 @@ uint64_t	get_time(void)
 	return (sec_ms + usec_ms);
 }
 
+void	ft_usleep(uint64_t time_in_ms)
+{
+	uint64_t	start;
+
+	start = get_time();
+	while ((get_time() - start) < time_in_ms)
+		usleep(500);
+}
+
 void	writing_function(t_table *t_table, int id, char *status)
 {
 	pthread_mutex_lock(&t_table->writing);

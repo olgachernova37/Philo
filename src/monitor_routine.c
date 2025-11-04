@@ -52,7 +52,7 @@ int	check_philosopher_death(t_philosofer *philo)
 	copy_last_meal = philo->last_eat;
 	pthread_mutex_unlock(&philo->data_mutex);
 	time_from_last_meal = time_now - copy_last_meal;
-	if (time_from_last_meal > philo->table->time_to_die)
+	if (time_from_last_meal >= philo->table->time_to_die)
 		return (1);
 	return (0);
 }

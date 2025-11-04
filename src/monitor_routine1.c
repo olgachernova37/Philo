@@ -50,7 +50,7 @@ static void	monitor_loop(t_table *table)
 			return ;
 		if (check_simulation_end(table))
 			return ;
-		usleep(1000);
+		ft_usleep(1);
 	}
 }
 
